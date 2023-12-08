@@ -1,0 +1,10 @@
+postgres:
+  host: localhost
+  port: 5432
+  user: postgres
+  password: admin
+  dbName: property_market_db
+  sslMode: disable
+  maxIdleConnections: 15
+  maxOpenConnections: 100
+  connMaxLifetime: 5
