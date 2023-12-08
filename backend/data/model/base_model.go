@@ -7,7 +7,7 @@ import (
 )
 
 type BaseModel struct {
-	Id int `gorm:"primarykey"`
+	Id uint `gorm:"primarykey"`
 
 	CreatedAt  time.Time    `gorm:"type:TIMESTAMP with time zone; not null;"`
 	ModifiedAt sql.NullTime `gorm:"type:TIMESTAMP with time zone; not null;"`

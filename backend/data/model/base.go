@@ -3,23 +3,23 @@ package model
 type Country struct {
 	BaseModel
 	Name   string `gorm:"size:15; type:string; not null;"`
-	States []State
+	States *[]State
 }
 
 type State struct {
 	BaseModel
 	Name      string `gorm:"size:15; type:string; not null;"`
-	CountryId int
+	CountryId uint
 	Country   Country `gorm:"foreignKey:CountryId; constraint:OnUpdate:NO ACTION; OnDelete:NO ACTION;"`
-	Cities    []City
+	Cities    *[]City
 }
 
 type City struct {
 	BaseModel
 	Name       string `gorm:"size:15; type:string; not null;"`
-	StateId    int
+	StateId    uint
 	State      State `gorm:"foreignKey:StateId; constraint:OnUpdate:NO ACTION; OnDelete:NO ACTION;"`
-	Properties []Property
+	Properties *[]Property
 }
 
 type Address struct {

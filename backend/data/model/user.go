@@ -5,8 +5,8 @@ type User struct {
 	FirstName     string `gorm:"type:string; size:64; not null;"`
 	LastName      string `gorm:"type:string; size:64; not null;"`
 	PhoneNumber   string `gorm:"type:string; size:16; not null;"`
-	Enabled       bool   `gorm:"type:bool; default: true"`
-	UserAccountId int
+	Enabled       bool   `gorm:"type:bool; default: true;"`
+	UserAccountId uint
 	UserAccount   UserAccount `gorm:"foreignKey:UserAccountId; constraint:OnUpdate:NO ACTION; OnDelete: NO ACTION;"`
 	UserRoles     *[]UserRole
 }
@@ -25,8 +25,8 @@ type Role struct {
 
 type UserRole struct {
 	BaseModel
-	UserId int
-	RoleId int
+	UserId uint
+	RoleId uint
 	User   User `gorm:"foreignKey:UserId; constraint:OnUpdate:NO ACTION; OnDelete:NO ACTION;"`
 	Role   Role `gorm:"foreignKey:RoleId; constraint:OnUpdate:NO ACTION; OnDelete:NO ACTION;"`
 }
