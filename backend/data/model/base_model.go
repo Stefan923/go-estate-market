@@ -9,9 +9,9 @@ import (
 type BaseModel struct {
 	Id int `gorm:"primarykey"`
 
-	CreatedAt  time.Time    `gorm:"type:TIMESTAMP with time zone;not null"`
-	ModifiedAt sql.NullTime `gorm:"type:TIMESTAMP with time zone;not null"`
-	DeletedAt  sql.NullTime `gorm:"type:TIMESTAMP with time zone;not null"`
+	CreatedAt  time.Time    `gorm:"type:TIMESTAMP with time zone; not null;"`
+	ModifiedAt sql.NullTime `gorm:"type:TIMESTAMP with time zone; not null;"`
+	DeletedAt  sql.NullTime `gorm:"type:TIMESTAMP with time zone; not null;"`
 }
 
 func (m *BaseModel) BeforeCreate(tx *gorm.DB) (err error) {
