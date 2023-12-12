@@ -13,7 +13,7 @@ var databaseClient *gorm.DB
 
 func InitDatabase(config *config.Config) error {
 	var err error
-	connectionDetails := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s TimeZone=Asia/Tehran",
+	connectionDetails := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s TimeZone=Europe/Bucharest",
 		config.Database.Host, config.Database.Port, config.Database.User, config.Database.Password,
 		config.Database.DbName, config.Database.SSLMode)
 
