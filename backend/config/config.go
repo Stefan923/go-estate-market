@@ -4,6 +4,7 @@ import "time"
 
 type Config struct {
 	Database DatabaseConfig
+	JWT      JwtConfig
 }
 
 type DatabaseConfig struct {
@@ -16,4 +17,11 @@ type DatabaseConfig struct {
 	MaxIdleConnections int
 	MaxOpenConnections int
 	ConnMaxLifetime    time.Duration
+}
+
+type JwtConfig struct {
+	AccessTokenExpireDurationMinutes  time.Duration
+	RefreshTokenExpireDurationMinutes time.Duration
+	AccessTokenSecret                 string
+	RefreshTokenSecret                string
 }
