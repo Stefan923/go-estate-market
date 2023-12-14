@@ -25,7 +25,7 @@ func (repository UserAccountRepository) FindByEmail(email string) (*model.UserAc
 	database := Preload(repository.Database, repository.Preloads)
 
 	err := database.
-		Where("email = ? and deleted_at is null").
+		Where("email = ? and deleted_at is null", email).
 		First(userAccount).
 		Error
 	if err != nil {
@@ -33,4 +33,19 @@ func (repository UserAccountRepository) FindByEmail(email string) (*model.UserAc
 	}
 
 	return userAccount, nil
+}
+
+func (repository UserAccountRepository) ExistsByEmail(email string) (bool, error) {
+	var exists bool
+
+	err := repository.Database.Model(&model.UserAccount{}).
+		Select("count(*) > 0").
+		Where("email = ?", email).
+		Find(&exists).
+		Error
+	if err != nil {
+		return false, err
+	}
+
+	return exists, err
 }

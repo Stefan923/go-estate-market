@@ -3,8 +3,9 @@ package config
 import "time"
 
 type Config struct {
-	Database DatabaseConfig
-	JWT      JwtConfig
+	Database   DatabaseConfig
+	JWT        JwtConfig
+	AuthConfig AuthConfig
 }
 
 type DatabaseConfig struct {
@@ -24,4 +25,8 @@ type JwtConfig struct {
 	RefreshTokenExpireDurationMinutes time.Duration
 	AccessTokenSecret                 string
 	RefreshTokenSecret                string
+}
+
+type AuthConfig struct {
+	BCryptCost int
 }
