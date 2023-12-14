@@ -7,7 +7,7 @@ import (
 )
 
 type BaseService[T any, Tc any, Tu any, Tr any] struct {
-	Repository repository.BaseRepository[T]
+	Repository *repository.BaseRepository[T]
 }
 
 func (service BaseService[T, Tc, Tu, Tr]) GetById(id uint) (*Tr, error) {
