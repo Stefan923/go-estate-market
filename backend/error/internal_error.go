@@ -1,11 +1,11 @@
 package error
 
-type ServiceError struct {
+type InternalError struct {
 	EndUserMessage   string `json:"endUserMessage"`
 	TechnicalMessage string `json:"technicalMessage"`
 	Err              error
 }
 
-func (s *ServiceError) Error() string {
-	return s.EndUserMessage
+func (error *InternalError) Error() string {
+	return error.EndUserMessage
 }

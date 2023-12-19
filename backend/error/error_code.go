@@ -1,9 +1,13 @@
 package error
 
 const (
-	EmailAlreadyUsed = "email is already used"
+	ClaimsNotFound     = "token claims not found"
+	EmailAlreadyUsed   = "email is already used"
+	InvalidToken       = "token not valid"
+	InvalidCredentials = "invalid credentials"
 
-	ClaimsNotFound = "token claims not found"
-	InvalidToken   = "token not valid"
-	RecordNotFound = "record not found"
+	InvalidPathParameter = "invalid path parameter"
+	RecordNotFound       = "record not found"
+
+	PermissionDenied = "permission denied"
 )
