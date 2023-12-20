@@ -16,7 +16,13 @@ const (
 )
 
 type TokenService struct {
-	config config.Config
+	config *config.Config
+}
+
+func NewTokenService(config *config.Config) *TokenService {
+	return &TokenService{
+		config: config,
+	}
 }
 
 func (service *TokenService) GenerateToken(token *dto.TokenRequest) (*dto.TokenDetail, error) {

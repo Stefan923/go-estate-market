@@ -19,6 +19,17 @@ type UserAccountService struct {
 	config                *config.Config
 }
 
+func NewUserAccountService(config *config.Config) *UserAccountService {
+	return &UserAccountService{
+		userAccountRepository: repository.NewUserAccountRepository(),
+		userService:           NewUserService(),
+		tokenService:          NewTokenService(config),
+		roleService:           NewRoleService(),
+		userRoleService:       NewUserRoleService(),
+		config:                config,
+	}
+}
+
 func (service UserAccountService) Login(request *dto.LoginRequest) (*dto.TokenDetail, error) {
 	userAccount, err := service.userAccountRepository.FindByEmail(request.Email)
 	if err != nil {
@@ -51,7 +62,7 @@ func (service UserAccountService) Login(request *dto.LoginRequest) (*dto.TokenDe
 }
 
 func (service UserAccountService) Register(context context.Context, request *dto.RegisterRequest) (*dto.TokenDetail, error) {
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(request.Password), service.config.AuthConfig.BCryptCost)
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(request.Password), service.config.Auth.BCryptCost)
 	if err != nil {
 		return nil, err
 	}

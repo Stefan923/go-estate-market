@@ -3,9 +3,10 @@ package config
 import "time"
 
 type Config struct {
-	Database   DatabaseConfig
-	JWT        JwtConfig
-	AuthConfig AuthConfig
+	Database DatabaseConfig
+	JWT      JwtConfig
+	Auth     AuthConfig
+	Server   ServerConfig
 }
 
 type DatabaseConfig struct {
@@ -29,4 +30,10 @@ type JwtConfig struct {
 
 type AuthConfig struct {
 	BCryptCost int
+}
+
+type ServerConfig struct {
+	RunningMode  string
+	InternalPort string
+	ExternalPort string
 }

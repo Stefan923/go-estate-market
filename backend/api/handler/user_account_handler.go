@@ -3,13 +3,20 @@ package handler
 import (
 	"backend/api/dto"
 	"backend/api/response"
+	"backend/config"
 	"backend/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 type UserAccountHandler struct {
-	userAccountService service.UserAccountService
+	userAccountService *service.UserAccountService
+}
+
+func NewUserAccountHandler(config *config.Config) *UserAccountHandler {
+	return &UserAccountHandler{
+		userAccountService: service.NewUserAccountService(config),
+	}
 }
 
 func (handler UserAccountHandler) Login(context *gin.Context) {
