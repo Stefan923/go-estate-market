@@ -19,7 +19,7 @@ type UserAccountService struct {
 	config                *config.Config
 }
 
-func (service UserAccountService) Login(request dto.LoginRequest) (*dto.TokenDetail, error) {
+func (service UserAccountService) Login(request *dto.LoginRequest) (*dto.TokenDetail, error) {
 	userAccount, err := service.userAccountRepository.FindByEmail(request.Email)
 	if err != nil {
 		return nil, err
@@ -27,12 +27,12 @@ func (service UserAccountService) Login(request dto.LoginRequest) (*dto.TokenDet
 
 	user, err := service.userService.GetById(userAccount.Id)
 	if err != nil {
-		return nil, err
+		return nil, &error2.InternalError{EndUserMessage: error2.InvalidCredentials}
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(userAccount.Password), []byte(request.Password))
 	if err != nil {
-		return nil, err
+		return nil, &error2.InternalError{EndUserMessage: error2.InvalidCredentials}
 	}
 
 	var roles []string
@@ -50,14 +50,14 @@ func (service UserAccountService) Login(request dto.LoginRequest) (*dto.TokenDet
 	return tokenDetail, nil
 }
 
-func (service UserAccountService) Register(context context.Context, request dto.RegisterRequest) (*dto.TokenDetail, error) {
+func (service UserAccountService) Register(context context.Context, request *dto.RegisterRequest) (*dto.TokenDetail, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(request.Password), service.config.AuthConfig.BCryptCost)
 	if err != nil {
 		return nil, err
 	}
 
 	if exists, _ := service.userAccountRepository.ExistsByEmail(request.Email); !exists {
-		return nil, &error2.ServiceError{EndUserMessage: error2.EmailAlreadyUsed}
+		return nil, &error2.InternalError{EndUserMessage: error2.EmailAlreadyUsed}
 	}
 
 	userAccount := model.UserAccount{

@@ -55,7 +55,7 @@ func (service *TokenService) VerifyToken(token string) (*jwt.Token, error) {
 	accessToken, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
 		_, ok := token.Method.(*jwt.SigningMethodHMAC)
 		if !ok {
-			return nil, &error2.ServiceError{EndUserMessage: error2.InvalidToken}
+			return nil, &error2.InternalError{EndUserMessage: error2.InvalidToken}
 		}
 		return []byte(service.config.JWT.AccessTokenSecret), nil
 	})
@@ -82,5 +82,5 @@ func (service *TokenService) GetClaims(token string) (map[string]interface{}, er
 		return claimsMap, nil
 	}
 
-	return nil, &error2.ServiceError{EndUserMessage: error2.ClaimsNotFound}
+	return nil, &error2.InternalError{EndUserMessage: error2.ClaimsNotFound}
 }
