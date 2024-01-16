@@ -1,0 +1,56 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: postgres
+    container_name: postgres_container
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: property_market_db
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - estate_market_network
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_container
+    environment:
+      PGADMIN_DEFAULT_EMAIL: stefanpopescu923@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: 123456
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "8090:80"
+    networks:
+      - estate_market_network
+    restart: unless-stopped
+    depends_on:
+      - postgres
+
+  backend:
+    build: ../src/
+    image: backend-image:latest
+    container_name: backend
+    environment:
+      - PORT=9003
+    ports:
+      - "9003:5000"
+    networks:
+      - estate_market_network
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+volumes:
+  postgres:
+  pgadmin:
+
+networks:
+  estate_market_network:
+    driver: bridge

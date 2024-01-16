@@ -1,0 +1,21 @@
+database:
+  host: "postgres_container"
+  port: "5432"
+  user: "postgres"
+  password: "admin"
+  databaseName: "property_market_db"
+  sslMode: "disable"
+  maxIdleConnections: 15
+  maxOpenConnections: 100
+  connMaxLifetime: 5
+jwt:
+  accessTokenSecret: "accessSecret"
+  refreshTokenSecret: "refreshSecret"
+  accessTokenExpireDurationMinutes: 1440
+  refreshTokenExpireDurationMinutes: 60
+auth:
+  bCryptCost: 10
+server:
+  internalPort: 5005
+  externalPort: 5005
+  runningMode: debug
