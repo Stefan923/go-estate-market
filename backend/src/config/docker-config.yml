@@ -16,6 +16,6 @@ jwt:
 auth:
   bCryptCost: 10
 server:
-  internalPort: 5005
-  externalPort: 5005
+  internalPort: 5000
+  externalPort: 5000
   runningMode: debug

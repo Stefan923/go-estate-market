@@ -73,7 +73,7 @@ func createRoleIfNotExists(database *gorm.DB, role *model2.Role) {
 		Where("name = ?", role.Name).
 		First(&exists)
 	if exists == 0 {
-		database.Create(role)
+		database.Create(&role)
 	}
 }
 
@@ -92,21 +92,21 @@ func createAdminUserInformation(database *gorm.DB, role model2.Role) {
 		encryptedPassword := fmt.Sprintf("%s", encryptedPasswordBytes)
 
 		userAccount := model2.UserAccount{Email: adminUserEmail, Password: encryptedPassword}
-		database.Create(userAccount)
+		database.Create(&userAccount)
 
 		user := model2.User{
-			FirstName:   "Admin",
-			LastName:    "Account",
-			PhoneNumber: "0555512345",
-			Enabled:     true,
-			UserAccount: userAccount,
+			FirstName:     "Admin",
+			LastName:      "Account",
+			PhoneNumber:   "0555512345",
+			Enabled:       true,
+			UserAccountId: userAccount.Id,
 		}
-		database.Create(user)
+		database.Create(&user)
 
 		userRole := model2.UserRole{
-			User: user,
-			Role: role,
+			UserId: user.Id,
+			RoleId: role.Id,
 		}
-		database.Create(userRole)
+		database.Create(&userRole)
 	}
 }
