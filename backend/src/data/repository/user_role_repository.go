@@ -13,7 +13,10 @@ func NewUserRoleRepository() *UserRoleRepository {
 	return &UserRoleRepository{
 		BaseRepository: BaseRepository[model.UserRole]{
 			Database: database.GetDatabase(),
-			Preloads: []preload{},
+			Preloads: []PreloadSetting{
+				{EntityName: "Role"},
+				{EntityName: "User"},
+			},
 		},
 	}
 }

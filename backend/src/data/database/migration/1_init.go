@@ -61,7 +61,7 @@ func createRolesAndAdminUser(database *gorm.DB) {
 	adminRole := model2.Role{Name: "ADMIN"}
 
 	createRoleIfNotExists(database, &adminRole)
-	createRoleIfNotExists(database, &model2.Role{Name: "USER"})
+	createRoleIfNotExists(database, &model2.Role{Name: "USER", DefaultRole: true})
 	createAdminUserInformation(database, adminRole)
 }
 

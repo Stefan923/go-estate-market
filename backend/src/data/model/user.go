@@ -19,9 +19,9 @@ type UserAccount struct {
 
 type Role struct {
 	BaseModel
-	Name      string `gorm:"type:string; size:10; not null; unique;"`
-	Default   bool   `gorm:"type:bool; default:false;"`
-	UserRoles *[]UserRole
+	Name        string `gorm:"type:string; size:10; not null; unique;"`
+	DefaultRole bool   `gorm:"type:bool; default:false;"`
+	UserRoles   *[]UserRole
 }
 
 type UserRole struct {

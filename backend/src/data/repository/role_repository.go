@@ -13,7 +13,7 @@ func NewRoleRepository() *RoleRepository {
 	return &RoleRepository{
 		BaseRepository: BaseRepository[model.Role]{
 			Database: database.GetDatabase(),
-			Preloads: []preload{},
+			Preloads: []PreloadSetting{},
 		},
 	}
 }
@@ -22,7 +22,7 @@ func (repository *RoleRepository) FindDefault() (*model.Role, error) {
 	role := new(model.Role)
 
 	err := repository.Database.
-		Where("default = ? and deleted_at is null", true).
+		Where("default_role = ? and deleted_at is null", true).
 		First(role).
 		Error
 	if err != nil {

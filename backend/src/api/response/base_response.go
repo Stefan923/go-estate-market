@@ -5,10 +5,10 @@ import (
 )
 
 type BaseHttpResponse struct {
-	Result           any  `json:"result"`
-	Success          bool `json:"success"`
-	ValidationErrors *[]validator.ValidationError
-	Error            any `json:"error"`
+	Result           any                          `json:"result"`
+	Success          bool                         `json:"success"`
+	ValidationErrors *[]validator.ValidationError `json:"validationErrors"`
+	Error            any                          `json:"error"`
 }
 
 func GenerateResponse(result any, success bool) *BaseHttpResponse {

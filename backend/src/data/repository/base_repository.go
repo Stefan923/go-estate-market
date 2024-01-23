@@ -13,18 +13,19 @@ import (
 
 const userIdFiledName = "UserId"
 
-type preload struct {
-	string
+type PreloadSetting struct {
+	EntityName string
 }
 
 type BaseRepository[T any] struct {
 	Database *gorm.DB
-	Preloads []preload
+	Preloads []PreloadSetting
 }
 
-func NewBaseRepository[T any]() *BaseRepository[T] {
+func NewBaseRepository[T any](preloads []PreloadSetting) *BaseRepository[T] {
 	return &BaseRepository[T]{
 		Database: db.GetDatabase(),
+		Preloads: preloads,
 	}
 }
 
@@ -106,9 +107,9 @@ func (repository *BaseRepository[T]) Delete(context context.Context, id uint) er
 	return nil
 }
 
-func Preload(database *gorm.DB, preloads []preload) *gorm.DB {
+func Preload(database *gorm.DB, preloads []PreloadSetting) *gorm.DB {
 	for _, preload := range preloads {
-		database = database.Preload(preload.string)
+		database = database.Preload(preload.EntityName)
 	}
 	return database
 }

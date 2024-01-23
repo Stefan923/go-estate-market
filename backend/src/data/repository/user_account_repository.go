@@ -13,9 +13,6 @@ func NewUserAccountRepository() *UserAccountRepository {
 	return &UserAccountRepository{
 		BaseRepository: BaseRepository[model.UserAccount]{
 			Database: db.GetDatabase(),
-			Preloads: []preload{
-				{string: "User"},
-			},
 		},
 	}
 }

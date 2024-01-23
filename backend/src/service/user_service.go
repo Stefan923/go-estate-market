@@ -10,9 +10,12 @@ type UserService struct {
 }
 
 func NewUserService() *UserService {
+	preloads := []repository.PreloadSetting{
+		{EntityName: "UserRoles"},
+	}
 	return &UserService{
 		BaseService: BaseService[model.User, model.User, model.User, model.User]{
-			Repository: repository.NewBaseRepository[model.User](),
+			Repository: repository.NewBaseRepository[model.User](preloads),
 		},
 	}
 }
