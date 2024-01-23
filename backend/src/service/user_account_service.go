@@ -67,7 +67,7 @@ func (service UserAccountService) Register(context context.Context, request *dto
 		return nil, err
 	}
 
-	if exists, _ := service.userAccountRepository.ExistsByEmail(request.Email); !exists {
+	if exists, _ := service.userAccountRepository.ExistsByEmail(request.Email); exists {
 		return nil, &error3.InternalError{EndUserMessage: error3.EmailAlreadyUsed}
 	}
 
