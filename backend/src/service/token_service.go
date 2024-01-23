@@ -27,8 +27,8 @@ func NewTokenService(config *config.Config) *TokenService {
 
 func (service *TokenService) GenerateToken(token *dto.TokenRequest) (*dto.TokenDetail, error) {
 	tokenDetail := new(dto.TokenDetail)
-	tokenDetail.AccessTokenExpireTime = time.Now().Add(service.config.JWT.AccessTokenExpireDurationMinutes * time.Minute).Unix()
-	tokenDetail.AccessTokenExpireTime = time.Now().Add(service.config.JWT.AccessTokenExpireDurationMinutes * time.Minute).Unix()
+	tokenDetail.AccessTokenExpireTime = time.Now().Add(service.config.Auth.JWT.AccessTokenExpireDurationMinutes * time.Minute).Unix()
+	tokenDetail.AccessTokenExpireTime = time.Now().Add(service.config.Auth.JWT.AccessTokenExpireDurationMinutes * time.Minute).Unix()
 
 	accessTokenClaims := jwt.MapClaims{}
 
@@ -39,7 +39,7 @@ func (service *TokenService) GenerateToken(token *dto.TokenRequest) (*dto.TokenD
 
 	var err error
 	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, accessTokenClaims)
-	tokenDetail.AccessToken, err = accessToken.SignedString([]byte(service.config.JWT.AccessTokenSecret))
+	tokenDetail.AccessToken, err = accessToken.SignedString([]byte(service.config.Auth.JWT.AccessTokenSecret))
 	if err != nil {
 		return nil, err
 	}
@@ -49,7 +49,7 @@ func (service *TokenService) GenerateToken(token *dto.TokenRequest) (*dto.TokenD
 	refreshTokenClaims[ExpireTimeKey] = tokenDetail.RefreshTokenExpireTime
 
 	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshTokenClaims)
-	tokenDetail.RefreshToken, err = refreshToken.SignedString([]byte(service.config.JWT.RefreshTokenSecret))
+	tokenDetail.RefreshToken, err = refreshToken.SignedString([]byte(service.config.Auth.JWT.RefreshTokenSecret))
 	if err != nil {
 		return nil, err
 	}
@@ -63,7 +63,7 @@ func (service *TokenService) VerifyToken(token string) (*jwt.Token, error) {
 		if !ok {
 			return nil, &error3.InternalError{EndUserMessage: error3.InvalidToken}
 		}
-		return []byte(service.config.JWT.AccessTokenSecret), nil
+		return []byte(service.config.Auth.JWT.AccessTokenSecret), nil
 	})
 	if err != nil {
 		return nil, err

@@ -62,7 +62,7 @@ func (service UserAccountService) Login(request *dto.LoginRequest) (*dto.TokenDe
 }
 
 func (service UserAccountService) Register(context context.Context, request *dto.RegisterRequest) (*dto.TokenDetail, error) {
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(request.Password), service.config.Auth.BCryptCost)
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(request.Password), service.config.Auth.Password.BCryptCost)
 	if err != nil {
 		return nil, err
 	}

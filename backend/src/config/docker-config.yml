@@ -8,13 +8,20 @@ database:
   maxIdleConnections: 15
   maxOpenConnections: 100
   connMaxLifetime: 5
-jwt:
-  accessTokenSecret: "accessSecret"
-  refreshTokenSecret: "refreshSecret"
-  accessTokenExpireDurationMinutes: 1440
-  refreshTokenExpireDurationMinutes: 60
 auth:
-  bCryptCost: 10
+  password:
+    bCryptCost: 10
+    includeChars: true
+    includeDigits: true
+    includeUppercase: true
+    includeLowercase: true
+    minLength: 6
+    maxLength: 64
+  jwt:
+    accessTokenSecret: "accessSecret"
+    refreshTokenSecret: "refreshSecret"
+    accessTokenExpireDurationMinutes: 1440
+    refreshTokenExpireDurationMinutes: 60
 server:
   internalPort: 5000
   externalPort: 5000

@@ -5,12 +5,12 @@ type RegisterRequest struct {
 	LastName    string `json:"lastName" binding:"required,min=3"`
 	PhoneNumber string `json:"phoneNumber" binding:"required,min=3"`
 	Email       string `json:"email" binding:"required,min=6,email"`
-	Password    string `json:"password" binding:"required,min=8,password"`
+	Password    string `json:"password" binding:"required,password"`
 }
 
 type LoginRequest struct {
 	Email    string `json:"email" binding:"required,min=6,email"`
-	Password string `json:"password" binding:"required,min=8"`
+	Password string `json:"password" binding:"required"`
 }
 
 type TokenDetail struct {

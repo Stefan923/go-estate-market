@@ -10,7 +10,6 @@ import (
 
 type Config struct {
 	Database DatabaseConfig
-	JWT      JwtConfig
 	Auth     AuthConfig
 	Server   ServerConfig
 }
@@ -34,8 +33,19 @@ type JwtConfig struct {
 	RefreshTokenSecret                string
 }
 
+type PasswordConfig struct {
+	BCryptCost       int
+	IncludeChars     bool
+	IncludeDigits    bool
+	IncludeUppercase bool
+	IncludeLowercase bool
+	MinLength        int
+	MaxLength        int
+}
+
 type AuthConfig struct {
-	BCryptCost int
+	Password PasswordConfig
+	JWT      JwtConfig
 }
 
 type ServerConfig struct {
