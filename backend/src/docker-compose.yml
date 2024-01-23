@@ -38,13 +38,27 @@ services:
     image: backend-image:latest
     container_name: backend
     environment:
-      - PORT=9003
+      - PORT=5000
     ports:
-      - "9003:5000"
+      - "8080:5000"
     networks:
       - estate_market_network
     depends_on:
       - postgres
+    restart: unless-stopped
+
+  frontend:
+    build: ../src/
+    image: frontend-image:latest
+    container_name: frontend
+    environment:
+      - PORT=80
+    ports:
+      - "80:4200"
+    networks:
+      - estate_market_network
+    depends_on:
+      - backend
     restart: unless-stopped
 
 volumes:
