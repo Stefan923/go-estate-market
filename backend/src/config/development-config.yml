@@ -26,3 +26,10 @@ server:
   internalPort: 5000
   externalPort: 5000
   runningMode: debug
+  cors:
+    allowedOrigins: "*"
+    allowedHeaders: "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+    allowedMethods: "POST , GET, OPTIONS, PUT, DELETE, UPDATE"
+    allowCredentials: "true"
+    contentType: "application/json"
+    maxAge: "21600"

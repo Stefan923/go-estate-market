@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"github.com/Stefan923/go-estate-market/api/middleware"
 	"github.com/Stefan923/go-estate-market/api/router"
 	validator2 "github.com/Stefan923/go-estate-market/api/validator"
 	"github.com/Stefan923/go-estate-market/config"
@@ -14,6 +15,8 @@ import (
 func StartServer(config *config.Config) {
 	gin.SetMode(config.Server.RunningMode)
 	engine := gin.New()
+
+	engine.Use(middleware.CreateCorsMiddleware(config))
 
 	registerRoutes(engine, config)
 	registerValidators()

@@ -52,6 +52,16 @@ type ServerConfig struct {
 	RunningMode  string
 	InternalPort string
 	ExternalPort string
+	Cors         CorsConfig
+}
+
+type CorsConfig struct {
+	AllowedOrigins   string
+	AllowedHeaders   string
+	AllowedMethods   string
+	AllowCredentials string
+	ContentType      string
+	MaxAge           string
 }
 
 func GetConfig() *Config {
