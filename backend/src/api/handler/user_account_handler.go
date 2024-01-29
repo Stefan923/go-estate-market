@@ -29,7 +29,7 @@ func (handler UserAccountHandler) Login(context *gin.Context) {
 		return
 	}
 
-	tokenDetail, err := handler.userAccountService.Login(request)
+	authDetail, err := handler.userAccountService.Login(request)
 	if err != nil {
 		context.AbortWithStatusJSON(
 			response2.TranslateErrorToStatusCode(err),
@@ -37,7 +37,7 @@ func (handler UserAccountHandler) Login(context *gin.Context) {
 		return
 	}
 
-	context.JSON(http.StatusCreated, response2.GenerateResponse(tokenDetail, true))
+	context.JSON(http.StatusCreated, response2.GenerateResponse(authDetail, true))
 }
 
 func (handler UserAccountHandler) Register(context *gin.Context) {
@@ -50,7 +50,7 @@ func (handler UserAccountHandler) Register(context *gin.Context) {
 		return
 	}
 
-	tokenDetail, err := handler.userAccountService.Register(context, request)
+	authDetail, err := handler.userAccountService.Register(context, request)
 	if err != nil {
 		context.AbortWithStatusJSON(
 			response2.TranslateErrorToStatusCode(err),
@@ -58,5 +58,5 @@ func (handler UserAccountHandler) Register(context *gin.Context) {
 		return
 	}
 
-	context.JSON(http.StatusCreated, response2.GenerateResponse(tokenDetail, false))
+	context.JSON(http.StatusCreated, response2.GenerateResponse(authDetail, false))
 }

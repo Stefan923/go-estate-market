@@ -13,6 +13,17 @@ type LoginRequest struct {
 	Password string `json:"password" binding:"required"`
 }
 
+type AuthDetail struct {
+	UserDetail  UserDetail  `json:"userDetail"`
+	TokenDetail TokenDetail `json:"tokenDetail"`
+}
+
+type UserDetail struct {
+	Email     string `json:"email"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+}
+
 type TokenDetail struct {
 	AccessToken            string `json:"accessToken"`
 	RefreshToken           string `json:"refreshToken"`

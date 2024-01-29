@@ -30,7 +30,7 @@ func NewUserAccountService(config *config.Config) *UserAccountService {
 	}
 }
 
-func (service UserAccountService) Login(request *dto.LoginRequest) (*dto.TokenDetail, error) {
+func (service UserAccountService) Login(request *dto.LoginRequest) (*dto.AuthDetail, error) {
 	userAccount, err := service.userAccountRepository.FindByEmail(request.Email)
 	if err != nil {
 		return nil, err
@@ -58,10 +58,21 @@ func (service UserAccountService) Login(request *dto.LoginRequest) (*dto.TokenDe
 		Roles:  roles,
 	})
 
-	return tokenDetail, nil
+	userDetail := dto.UserDetail{
+		Email:     userAccount.Email,
+		FirstName: user.FirstName,
+		LastName:  user.LastName,
+	}
+
+	authDetail := dto.AuthDetail{
+		UserDetail:  userDetail,
+		TokenDetail: *tokenDetail,
+	}
+
+	return &authDetail, nil
 }
 
-func (service UserAccountService) Register(context context.Context, request *dto.RegisterRequest) (*dto.TokenDetail, error) {
+func (service UserAccountService) Register(context context.Context, request *dto.RegisterRequest) (*dto.AuthDetail, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(request.Password), service.config.Auth.Password.BCryptCost)
 	if err != nil {
 		return nil, err
@@ -116,5 +127,16 @@ func (service UserAccountService) Register(context context.Context, request *dto
 		Roles:  roles,
 	})
 
-	return tokenDetail, nil
+	userDetail := dto.UserDetail{
+		Email:     createdUserAccount.Email,
+		FirstName: createdUser.FirstName,
+		LastName:  createdUser.LastName,
+	}
+
+	authDetail := dto.AuthDetail{
+		UserDetail:  userDetail,
+		TokenDetail: *tokenDetail,
+	}
+
+	return &authDetail, nil
 }
