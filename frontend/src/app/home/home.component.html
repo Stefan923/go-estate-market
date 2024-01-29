@@ -1,10 +1,13 @@
 <div class="container-fluid pt-5">
   <div class="row centered-container">
-    <div class="col-sm img-btn-card mrc-1">
+    <a [routerLink]="['/properties']" class="col-sm img-btn-card mrc-1">
       <img [src]="'assets/list-offers-icon.png'" class="img-fluid m-3" width="112" height="112" alt="show-properties-icon">
-    </div>
-    <div class="col-sm img-btn-card">
-      <img [src]="'assets/add-announce-icon.png'" class="img-fluid m-3" width="112" height="112" alt="Add Property">
-    </div>
+    </a>
+    <a [routerLink]="['/properties/new']" class="col-sm img-btn-card mrc-1">
+      <img [src]="'ass  ets/my-properties-icon.png'" class="img-fluid m-3" width="112" height="112" alt="my-properties-icon">
+    </a>
+    <a [routerLink]="['/properties/new']" class="col-sm img-btn-card">
+      <img [src]="'assets/add-announce-icon.png'" class="img-fluid m-3" width="112" height="112" alt="add-property-icon">
+    </a>
   </div>
 </div>
