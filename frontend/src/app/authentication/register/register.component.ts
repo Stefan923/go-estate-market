@@ -71,7 +71,7 @@ export default class RegisterComponent implements OnInit {
 
     observable.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
-        if (response.success) {
+        if (response !== null && response.success) {
           this.router.navigate(["/"])
         }
         this.isSubmitting = false

@@ -57,9 +57,10 @@ export default class LoginComponent implements OnInit {
 
     observable.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
-        if (response.success) {
+        if (response !== null && response.success) {
           this.router.navigate(["/"])
         }
+        this.isSubmitting = false
       },
       error: (err) => {
         console.log(err)
