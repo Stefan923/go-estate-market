@@ -1,0 +1,41 @@
+<form [formGroup]="loginForm" (ngSubmit)="submitForm()">
+  <!-- Email input -->
+  <div class="form-outline mb-4">
+    <fieldset [disabled]="isSubmitting">
+      <fieldset class="form-group">
+        <input id="emailField"
+               formControlName="email"
+               class="form-control form-control-lg"
+               type="email" />
+        <label class="form-label" for="emailField">Email address</label>
+      </fieldset>
+    </fieldset>
+  </div>
+
+  <!-- Password input -->
+  <div class="form-outline mb-4">
+    <fieldset [disabled]="isSubmitting">
+      <fieldset class="form-group">
+        <input id="passwordField"
+               formControlName="password"
+               class="form-control form-control-lg"
+               type="password" />
+        <label class="form-label" for="passwordField">Password</label>
+      </fieldset>
+    </fieldset>
+  </div>
+
+  <div class="d-flex justify-content-around align-items-center mb-4">
+    <!-- Checkbox -->
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" id="form1Example3" checked />
+      <label class="form-check-label" for="form1Example3"> Remember me </label>
+    </div>
+
+    <!-- Register button -->
+    <a [routerLink]="['/register']">Need an account?</a>
+  </div>
+
+  <!-- Submit button -->
+  <button type="submit" class="btn btn-primary btn-lg btn-block">Sign in</button>
+</form>
