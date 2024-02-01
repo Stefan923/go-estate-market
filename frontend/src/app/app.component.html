@@ -1,7 +1,13 @@
 <div class="header-container">
-  <div class="right-btn-container">
-    <button [routerLink]="['/login']" class="right-btn sign-in-btn"> Sign in </button>
-  </div>
+  @if (authenticationService.isAuthenticated | async) {
+    <div class="right-btn-container">
+      <button (click)="authenticationService.logout()" class="right-btn sign-in-btn"> Logout </button>
+    </div>
+  } @else {
+    <div class="right-btn-container">
+      <button [routerLink]="['/login']" class="right-btn sign-in-btn"> Sign in </button>
+    </div>
+  }
 </div>
 
 <router-outlet />
