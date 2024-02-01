@@ -1,0 +1,31 @@
+route:
+  repeat_interval: 30m
+  receiver: "sms-notifications"
+  routes:
+    - receiver: "email-notifications"
+      group_wait: 30s
+      match_re:
+        severity: critical|warning
+      continue: true
+
+    - receiver: "sms-notifications"
+      group_wait: 30s
+      match_re:
+        severity: critical
+      continue: true
+
+receivers:
+  - name: "email-notifications"
+    email_configs:
+      - to: admin@estate-market.com
+        from: admin@estate-market.com
+        smarthost: smtp.estate-market.com:587
+        auth_username: admin@estate-market.com
+        auth_identity: admin@estate-market.com
+        auth_password: xxxxxxxxxxxxxxxxxx
+        send_resolved: true
+
+  - name: "sms-notifications"
+    webhook_configs:
+      - url: http://go-estate-market-api/api/notify/send
+        send_resolved: true

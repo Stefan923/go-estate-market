@@ -3,6 +3,8 @@ package repository
 import (
 	db "github.com/Stefan923/go-estate-market/data/database"
 	"github.com/Stefan923/go-estate-market/data/model"
+	"github.com/Stefan923/go-estate-market/metrics"
+	"reflect"
 )
 
 type UserAccountRepository struct {
@@ -26,9 +28,11 @@ func (repository UserAccountRepository) FindByEmail(email string) (*model.UserAc
 		First(userAccount).
 		Error
 	if err != nil {
+		metrics.DatabaseCallCounter.WithLabelValues(reflect.TypeOf(*userAccount).String(), "FindByEmail", "Failed").Inc()
 		return nil, err
 	}
 
+	metrics.DatabaseCallCounter.WithLabelValues(reflect.TypeOf(*userAccount).String(), "FindByEmail", "Success").Inc()
 	return userAccount, nil
 }
 
@@ -41,8 +45,10 @@ func (repository UserAccountRepository) ExistsByEmail(email string) (bool, error
 		Find(&exists).
 		Error
 	if err != nil {
+		metrics.DatabaseCallCounter.WithLabelValues(reflect.TypeOf(model.UserAccount{}).String(), "FindByEmail", "Failed").Inc()
 		return false, err
 	}
 
+	metrics.DatabaseCallCounter.WithLabelValues(reflect.TypeOf(model.UserAccount{}).String(), "FindByEmail", "Success").Inc()
 	return exists, err
 }

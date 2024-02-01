@@ -33,6 +33,56 @@ services:
     depends_on:
       - postgres
 
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./config/prometheus/:/etc/prometheus/
+      - prometheus_data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus-config.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+      - "--web.console.templates=/usr/share/prometheus/consoles"
+    ports:
+      - "9090:9090"
+    links:
+      - alertmanager:alertmanager
+    networks:
+      - estate_market_network
+    restart: always
+
+  node-exporter:
+    image: prom/node-exporter
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - "--path.procfs=/host/proc"
+      - "--path.sysfs=/host/sys"
+      - --collector.filesystem.ignored-mount-points
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+    ports:
+      - "9100:9100"
+    networks:
+      - estate_market_network
+    restart: always
+    deploy:
+      mode: global
+
+  alertmanager:
+    image: prom/alertmanager
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./config/alertmanager/:/etc/alertmanager/
+    networks:
+      - estate_market_network
+    restart: always
+    command:
+      - "--config.file=/etc/alertmanager/alertmanager-config.yml"
+      - "--storage.path=/alertmanager"
+
   backend:
     build: ../src/
     image: backend-image:latest
@@ -64,6 +114,7 @@ services:
 volumes:
   postgres:
   pgadmin:
+  prometheus_data:
 
 networks:
   estate_market_network:

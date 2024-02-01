@@ -5,9 +5,11 @@ import (
 	"database/sql"
 	db "github.com/Stefan923/go-estate-market/data/database"
 	"github.com/Stefan923/go-estate-market/data/model"
+	"github.com/Stefan923/go-estate-market/metrics"
 	"github.com/Stefan923/go-estate-market/util"
 	"gorm.io/gorm"
 	"log"
+	"reflect"
 	"time"
 )
 
@@ -38,10 +40,11 @@ func (repository *BaseRepository[T]) FindById(id uint) (*T, error) {
 		First(object).
 		Error
 	if err != nil {
-		log.Println("")
+		metrics.DatabaseCallCounter.WithLabelValues(reflect.TypeOf(*object).String(), "FindById", "Failed").Inc()
 		return nil, err
 	}
 
+	metrics.DatabaseCallCounter.WithLabelValues(reflect.TypeOf(*object).String(), "FindById", "Success").Inc()
 	return object, nil
 }
 
@@ -53,11 +56,14 @@ func (repository *BaseRepository[T]) Save(context context.Context, object *T) (*
 		Error
 	if err != nil {
 		database.Rollback()
+
+		metrics.DatabaseCallCounter.WithLabelValues(reflect.TypeOf(*object).String(), "Create", "Failed").Inc()
 		log.Println("Error while creating object: ", err)
 		return nil, err
 	}
 	database.Commit()
 
+	metrics.DatabaseCallCounter.WithLabelValues(reflect.TypeOf(*object).String(), "Create", "Success").Inc()
 	convertedObject, _ := util.ConvertTo[model.BaseModel](object)
 	return repository.FindById(convertedObject.Id)
 }
@@ -76,10 +82,13 @@ func (repository *BaseRepository[T]) Update(context context.Context, id uint, ob
 		Error
 	if err != nil {
 		database.Rollback()
+
+		metrics.DatabaseCallCounter.WithLabelValues(reflect.TypeOf(*object).String(), "Update", "Failed").Inc()
 		return nil, err
 	}
 	database.Commit()
 
+	metrics.DatabaseCallCounter.WithLabelValues(reflect.TypeOf(*object).String(), "Update", "Success").Inc()
 	return repository.FindById(id)
 }
 
@@ -100,10 +109,13 @@ func (repository *BaseRepository[T]) Delete(context context.Context, id uint) er
 		Updates(deleteMap).
 		RowsAffected; deletedObjectsCount == 0 {
 		database.Rollback()
+
+		metrics.DatabaseCallCounter.WithLabelValues(reflect.TypeOf(*object).String(), "Delete", "Failed").Inc()
 		return nil
 	}
 	database.Commit()
 
+	metrics.DatabaseCallCounter.WithLabelValues(reflect.TypeOf(*object).String(), "Delete", "Success").Inc()
 	return nil
 }
 

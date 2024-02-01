@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func CreateCorsMiddleware(cfg *config.Config) gin.HandlerFunc {
+func NewCorsMiddleware(cfg *config.Config) gin.HandlerFunc {
 	return func(context *gin.Context) {
 		context.Writer.Header().Set("Access-Control-Allow-Origin", cfg.Server.Cors.AllowedOrigins)
 		context.Header("Access-Control-Allow-Credentials", cfg.Server.Cors.AllowCredentials)
