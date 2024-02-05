@@ -18,7 +18,7 @@ COPY --from=builder /app/server /app/server
 COPY --from=builder /app/config/docker-config.yml /app/config/docker-config.yml
 
 ENV APP_ENV docker
-ENV PORT ${Port}
+ENV PORT ${PORT}
 
 RUN chmod +x /app/server
 
