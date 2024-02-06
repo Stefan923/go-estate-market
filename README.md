@@ -11,7 +11,9 @@ This project is a web application designed for managing and browsing real estate
 
 - **HTML/CSS**: Markup and styling for the frontend interface.
 
-- **MySQL/PostgreSQL**: Database management for storing real estate listings, user information, etc.
+- **PostgreSQL**: Database management for storing real estate listings, user information, etc.
+
+- **Prometheus**: Statistics about HTTP requests' duration and database calls.
 
 # Setup Instructions
 
