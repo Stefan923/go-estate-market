@@ -1,7 +1,7 @@
 # go-estate-market
 
 This project is a web application designed for managing and browsing real estate listings. It consists of a backend web server written in GoLang and a frontend client developed using TypeScript and Angular.
-### Technologies Used:
+## Technologies Used:
 
 - **GoLang**: Backend server development.
 
@@ -15,9 +15,9 @@ This project is a web application designed for managing and browsing real estate
 
 - **Prometheus**: Statistics about HTTP requests' duration and database calls.
 
-# Setup Instructions
+## Setup Instructions
 
-## Backend Setup
+### Backend Setup
 
 - Ensure you have GoLang installed on your system.
 
@@ -32,7 +32,7 @@ docker build . -t backend-image
 
 - Once the image is built successfully, you can run the backend server as a Docker container. Make sure to configure the database connection in the .env file before running the container.
 
-## Frontend Setup:
+### Frontend Setup:
 
 - Make sure you have Node.js and npm installed.
 
@@ -45,7 +45,7 @@ docker build . -t frontend-image
 
 - After the image is built, you can run the frontend client as a Docker container. Ensure to modify the API base URL in the environment configuration file if necessary.
 
-## Run Docker images
+### Run Docker images
 
 - Navigate to **/backend** and run the following command:
 ```
