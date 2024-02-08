@@ -1,17 +1,21 @@
 package model
 
-import "time"
+import (
+	"time"
+)
 
 type Property struct {
 	BaseModel
-	OwnerId              uint
-	Owner                User `gorm:"foreignKey:OwnerId; constraint:OnUpdate:NO ACTION; OnDelete:NO ACTION;"`
-	CityId               uint
-	City                 User `gorm:"foreignKey:CityId; constraint:OnUpdate:NO ACTION; OnDelete:NO ACTION;"`
-	PropertyPrices       *[]PropertyPrice
-	PropertyCategoryId   uint
-	PropertyCategory     PropertyCategory `gorm:"foreignKey:PropertyCategoryId; constraint:OnUpdate:NO ACTION; OnDelete:NO ACTION;"`
-	PropertyAnnouncement Post             `gorm:"foreignKey:PropertyId;"`
+	OwnerId            uint
+	Owner              User `gorm:"foreignKey:OwnerId; constraint:OnUpdate:NO ACTION; OnDelete:NO ACTION;"`
+	CityId             uint
+	City               User    `gorm:"foreignKey:CityId; constraint:OnUpdate:NO ACTION; OnDelete:NO ACTION;"`
+	CurrentCurrency    string  `gorm:"size:4; type:string; not null;"`
+	CurrentPrice       float32 `gorm:"type:decimal(10,2); not null;"`
+	Prices             *[]PropertyPrice
+	PropertyCategoryId uint
+	Category           PropertyCategory `gorm:"foreignKey:PropertyCategoryId; constraint:OnUpdate:NO ACTION; OnDelete:NO ACTION;"`
+	Announcement       Post             `gorm:"foreignKey:PropertyId;"`
 }
 
 type PropertyCategory struct {
@@ -23,15 +27,18 @@ type PropertyCategory struct {
 
 type PropertyDetails struct {
 	BaseModel
-	NumberOfRooms     int `gorm:"type:int; not null;"`
-	NumberOfBathrooms int `gorm:"type:int; not null;"`
-	NumberOfKitchens  int `gorm:"type:int; not null;"`
-	PropertyId        uint
-	Property          Property `gorm:"foreignKey:PropertyId; constraint:OnUpdate:NO ACTION; OnDelete:NO ACTION;"`
+	NumberOfRooms         int `gorm:"type:int; not null;"`
+	NumberOfBathrooms     int `gorm:"type:int; not null;"`
+	NumberOfKitchens      int `gorm:"type:int; not null;"`
+	NumberOfParkingSpaces int `gorm:"type:int; default:0"`
+	PropertyId            uint
+	Property              Property `gorm:"foreignKey:PropertyId; constraint:OnUpdate:NO ACTION; OnDelete:NO ACTION;"`
 }
 
 type PropertyPrice struct {
 	BaseModel
+	CurrencyId uint
+	Currency   Currency  `gorm:"foreignKey:CurrencyId; constraint:OnUpdate:NO ACTION; OnDelete:NO ACTION;"`
 	Price      float32   `gorm:"type:decimal(10,2); not null;"`
 	PriceAt    time.Time `gorm:"type:TIMESTAMP with time zone; not null;"`
 	PropertyId uint

@@ -29,3 +29,8 @@ type Address struct {
 	Floor        int    `gorm:"type:int; not null;"`
 	Apartment    int    `gorm:"type:int; not null;"`
 }
+
+type Currency struct {
+	BaseModel
+	Code string `gorm:"size:4; type:string; not null;"`
+}
