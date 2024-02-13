@@ -37,7 +37,7 @@ func createAllTables(database *gorm.DB) {
 
 	addTable(database, &tables, model2.PropertyCategory{})
 	addTable(database, &tables, model2.Property{})
-	addTable(database, &tables, model2.PropertyDetails{})
+	addTable(database, &tables, model2.PropertyDetail{})
 	addTable(database, &tables, model2.PropertyPrice{})
 
 	addTable(database, &tables, model2.Post{})

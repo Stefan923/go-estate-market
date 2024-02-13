@@ -28,3 +28,7 @@ func (handler *PropertyHandler) GetAllByCategory(context *gin.Context, category 
 
 	context.JSON(http.StatusOK, response2.GenerateResponse(authDetail, true))
 }
+
+func (handler *PropertyHandler) CreateProperty(context *gin.Context) {
+
+}

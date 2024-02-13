@@ -9,7 +9,7 @@ type Property struct {
 	OwnerId            uint
 	Owner              User `gorm:"foreignKey:OwnerId; constraint:OnUpdate:NO ACTION; OnDelete:NO ACTION;"`
 	CityId             uint
-	City               User    `gorm:"foreignKey:CityId; constraint:OnUpdate:NO ACTION; OnDelete:NO ACTION;"`
+	City               City    `gorm:"foreignKey:CityId; constraint:OnUpdate:NO ACTION; OnDelete:NO ACTION;"`
 	CurrentCurrency    string  `gorm:"size:4; type:string; not null;"`
 	CurrentPrice       float32 `gorm:"type:decimal(10,2); not null;"`
 	Prices             *[]PropertyPrice
@@ -25,7 +25,7 @@ type PropertyCategory struct {
 	Properties *[]Property
 }
 
-type PropertyDetails struct {
+type PropertyDetail struct {
 	BaseModel
 	NumberOfRooms         int `gorm:"type:int; not null;"`
 	NumberOfBathrooms     int `gorm:"type:int; not null;"`

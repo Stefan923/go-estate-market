@@ -11,6 +11,8 @@ type Post struct {
 type PostComment struct {
 	BaseModel
 	Description string `gorm:"type:string; size:512; not null;"`
+	UserId      uint
+	User        User `gorm:"foreignKey:UserId; constraint:OnUpdate:NO ACTION; OnDelete:NO ACTION;"`
 	PostId      uint
 	Post        Post `gorm:"foreignKey:PostId; constraint:OnUpdate:NO ACTION; OnDelete:NO ACTION;"`
 }

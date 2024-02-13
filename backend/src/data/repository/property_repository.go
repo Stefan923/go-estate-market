@@ -16,7 +16,13 @@ func NewPropertyRepository() *PropertyRepository {
 		BaseRepository: BaseRepository[model.Property]{
 			Database: database.GetDatabase(),
 			Preloads: []PreloadSetting{
-				{EntityName: "Category"},
+				{EntityName: "PropertyCategory"},
+				{EntityName: "UserAccount"},
+				{EntityName: "User"},
+				{EntityName: "Country"},
+				{EntityName: "State"},
+				{EntityName: "City"},
+				{EntityName: "Post"},
 			},
 		},
 	}
