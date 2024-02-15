@@ -28,7 +28,7 @@ func NewPropertyService() *PropertyService {
 	}
 }
 
-func (service *PropertyService) Save(context context.Context, propertyDto dto.PropertyCreationDto) (*dto.PropertyDto, error) {
+func (service *PropertyService) Save(context context.Context, propertyDto *dto.PropertyCreationDto) (*dto.PropertyDto, error) {
 	property := model.Property{
 		OwnerId:            propertyDto.OwnerId,
 		CityId:             propertyDto.CityId,

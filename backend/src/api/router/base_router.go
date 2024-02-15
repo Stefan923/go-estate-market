@@ -12,3 +12,10 @@ func StartAuthRouter(router *gin.RouterGroup, config *config.Config) {
 	router.POST("/login", userAccountHandler.Login)
 	router.POST("/register", userAccountHandler.Register)
 }
+
+func StartPropertiesRouter(router *gin.RouterGroup, config *config.Config) {
+	userAccountHandler := handler.NewUserAccountHandler(config)
+
+	router.GET("/", userAccountHandler.Login)
+	router.POST("/", userAccountHandler.Register)
+}

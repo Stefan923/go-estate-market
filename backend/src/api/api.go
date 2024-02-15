@@ -37,8 +37,10 @@ func registerRoutes(engine *gin.Engine, config *config.Config) {
 	v1Route := apiRoute.Group("/v1")
 	{
 		userAccountsRoute := v1Route.Group("/auth")
+		propertiesRoute := v1Route.Group("/properties")
 
 		router.StartAuthRouter(userAccountsRoute, config)
+		router.StartPropertiesRouter(propertiesRoute, config)
 	}
 
 	engine.GET("/metrics", gin.WrapH(promhttp.Handler()))
