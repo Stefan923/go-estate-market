@@ -1,0 +1,18 @@
+countries:
+  - name: Romania
+    states:
+      - name: Bucharest
+        cities:
+          - name: Bucharest
+      - name: Cluj
+        cities:
+          - name: Cluj-Napoca
+          - name: Floresti
+          - name: Turda
+      - name: Dolj
+        cities:
+          - name: Craiova
+          - name: Filiasi
+      - name: Timisoara
+        cities:
+          - name: Timisoara

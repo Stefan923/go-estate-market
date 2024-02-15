@@ -16,6 +16,7 @@ RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -
 
 COPY --from=builder /app/server /app/server
 COPY --from=builder /app/config/docker-config.yml /app/config/docker-config.yml
+COPY --from=builder /app/config/countries.yml /app/config/countries.yml
 
 ENV APP_ENV docker
 ENV PORT ${PORT}

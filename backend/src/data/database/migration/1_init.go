@@ -2,12 +2,17 @@ package migration
 
 import (
 	"fmt"
+	"github.com/Stefan923/go-estate-market/config"
 	db "github.com/Stefan923/go-estate-market/data/database"
 	model2 "github.com/Stefan923/go-estate-market/data/model"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 	"log"
 )
+
+type CountriesConfig struct {
+	Countries []model2.Country
+}
 
 const (
 	bcryptHashCost    int    = 10
@@ -20,6 +25,7 @@ func Run() {
 
 	createAllTables(database)
 	createRolesAndAdminUser(database)
+	loadAndCreateCountries(database)
 }
 
 func createAllTables(database *gorm.DB) {
@@ -109,4 +115,103 @@ func createAdminUserInformation(database *gorm.DB, role model2.Role) {
 		}
 		database.Create(&userRole)
 	}
+}
+
+func loadAndCreateCountries(database *gorm.DB) {
+	fileReader := config.FileReader[CountriesConfig]{}
+	countries := fileReader.GetContent("/app/config/countries")
+	if countries == nil {
+		return
+	}
+
+	for _, country := range countries.Countries {
+		if err := createCountry(database, &country); err != nil {
+			return
+		}
+	}
+}
+
+func createCountry(database *gorm.DB, country *model2.Country) error {
+	exists := 0
+
+	database.
+		Model(&model2.Country{}).
+		Select("1").
+		Where("name = ?", country.Name).
+		First(&exists)
+
+	countryToCreate := model2.Country{
+		Name: country.Name,
+	}
+	if exists == 0 {
+		if err := database.Create(&countryToCreate).Error; err != nil {
+			log.Println("Error while creating country \": ", countryToCreate.Name, "\": ", err)
+			return err
+		}
+	} else {
+		database.
+			Where("name = ? and deleted_at is null", country.Name).
+			First(&countryToCreate)
+	}
+
+	for _, state := range *country.States {
+		state.CountryId = countryToCreate.Id
+		if err := createState(database, &state); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func createState(database *gorm.DB, state *model2.State) error {
+	exists := 0
+
+	database.
+		Model(&model2.State{}).
+		Select("1").
+		Where("name = ?", state.Name).
+		First(&exists)
+
+	stateToCreate := model2.State{
+		Name:      state.Name,
+		CountryId: state.CountryId,
+	}
+	if exists == 0 {
+		if err := database.Create(&stateToCreate).Error; err != nil {
+			log.Println("Error while creating state \"", stateToCreate.Name, "\": ", err)
+			return err
+		}
+	} else {
+		database.
+			Where("name = ? and deleted_at is null", state.Name).
+			First(&stateToCreate)
+	}
+
+	for _, city := range *state.Cities {
+		city.StateId = stateToCreate.Id
+		if err := createCity(database, &city); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func createCity(database *gorm.DB, city *model2.City) error {
+	exists := 0
+
+	database.
+		Model(&model2.City{}).
+		Select("1").
+		Where("name = ?", city.Name).
+		First(&exists)
+
+	if exists != 0 {
+		if err := database.Create(city).Error; err != nil {
+			log.Println("Error while creating city \"", city.Name, "\": ", err)
+			return err
+		}
+	}
+	return nil
 }
