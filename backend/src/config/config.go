@@ -1,8 +1,6 @@
 package config
 
 import (
-	"errors"
-	"github.com/spf13/viper"
 	"log"
 	"os"
 	"time"
@@ -65,55 +63,24 @@ type CorsConfig struct {
 }
 
 func GetConfig() *Config {
-	cfgPath := getConfigPath(os.Getenv("APP_ENV"))
-	configReader, err := LoadConfig(cfgPath, "yml")
-	if err != nil {
-		log.Fatalf("Error while loading config: %v", err)
+	fileReader := FileReader[Config]{}
+	configFilePath := getConfigPath(os.Getenv("APP_ENV"))
+
+	config := fileReader.GetContent(configFilePath)
+	if config == nil {
+		return nil
 	}
 
-	config, err := ParseConfig(configReader)
-	envPort := os.Getenv("PORT")
-	if envPort != "" {
-		config.Server.ExternalPort = envPort
+	environmentPort := os.Getenv("PORT")
+	if environmentPort != "" {
+		config.Server.ExternalPort = environmentPort
 		log.Printf("Set external port from environment -> %s", config.Server.ExternalPort)
 	} else {
 		config.Server.ExternalPort = config.Server.InternalPort
 		log.Printf("Set external port from environment -> %s", config.Server.ExternalPort)
 	}
-	if err != nil {
-		log.Fatalf("Error while parsing config: %v", err)
-	}
 
 	return config
-}
-
-func ParseConfig(configReader *viper.Viper) (*Config, error) {
-	var config Config
-	err := configReader.Unmarshal(&config)
-	if err != nil {
-		log.Printf("Unable to parse config: %v", err)
-		return nil, err
-	}
-	return &config, nil
-}
-
-func LoadConfig(filename string, fileType string) (*viper.Viper, error) {
-	configReader := viper.New()
-	configReader.SetConfigType(fileType)
-	configReader.SetConfigName(filename)
-	configReader.AddConfigPath(".")
-	configReader.AutomaticEnv()
-
-	err := configReader.ReadInConfig()
-	if err != nil {
-		log.Printf("Unable to read config: %v", err)
-		var configFileNotFoundError viper.ConfigFileNotFoundError
-		if errors.As(err, &configFileNotFoundError) {
-			return nil, errors.New("could not find configuration file")
-		}
-		return nil, err
-	}
-	return configReader, nil
 }
 
 func getConfigPath(env string) string {
