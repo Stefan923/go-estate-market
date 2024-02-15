@@ -1,6 +1,7 @@
 package dto
 
 type PropertyDto struct {
+	Id              uint              `json:"id"`
 	Owner           UserDetail        `json:"owner"`
 	CurrentCurrency string            `json:"currentCurrency"`
 	CurrentPrice    float32           `json:"currentPrice"`
@@ -10,14 +11,19 @@ type PropertyDto struct {
 }
 
 type PropertyCreationDto struct {
-	OwnerId         uint    `json:"ownerId"`
-	CurrentCurrency string  `json:"currentCurrency"`
-	CurrentPrice    float32 `json:"currentPrice"`
+	OwnerId         uint              `json:"ownerId"`
+	CurrentCurrency string            `json:"currentCurrency"`
+	CurrentPrice    float32           `json:"currentPrice"`
+	CityId          uint              `json:"cityId"`
+	CategoryId      uint              `json:"categoryId"`
+	PropertyDetail  PropertyDetailDto `json:"propertyDetail"`
+	Announcement    PostCreationDto   `json:"announcement"`
 }
 
 type PropertyDetailDto struct {
-	NumberOfRooms         int `json:"numberOfRooms"`
-	NumberOfBathrooms     int `json:"numberOfBathrooms"`
-	NumberOfKitchens      int `json:"numberOfKitchens"`
-	NumberOfParkingSpaces int `json:"numberOfParkingSpaces"`
+	Id                    uint `json:"id"`
+	NumberOfRooms         int  `json:"numberOfRooms"`
+	NumberOfBathrooms     int  `json:"numberOfBathrooms"`
+	NumberOfKitchens      int  `json:"numberOfKitchens"`
+	NumberOfParkingSpaces int  `json:"numberOfParkingSpaces"`
 }
