@@ -7,13 +7,35 @@ import (
 	"github.com/Stefan923/go-estate-market/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 type PropertyHandler struct {
-	propertyService service.PropertyService
+	BaseHandler
+	propertyService *service.PropertyService
 }
 
-func (handler *PropertyHandler) GetAllByCategory(context *gin.Context, category string, pageNumber int, pageSize int, sortBy string, sortType string) {
+func NewPropertyHandler() *PropertyHandler {
+	return &PropertyHandler{
+		propertyService: service.NewPropertyService(),
+	}
+}
+
+func (handler *PropertyHandler) GetAllByCategory(context *gin.Context) {
+	category := context.Param("category")
+	pageNumber, err := strconv.Atoi(context.Param("pageNumber"))
+	if err != nil {
+		handler.respondWithBadStatus(context, err)
+		return
+	}
+	pageSize, err := strconv.Atoi(context.Param("pageSize"))
+	if err != nil {
+		handler.respondWithBadStatus(context, err)
+		return
+	}
+	sortBy := context.Param("sortBy")
+	sortType := context.Param("sortType")
+
 	authDetail, err := handler.propertyService.GetAllByCategory(category, &pagination.PageInfo{
 		PageNumber: pageNumber,
 		PageSize:   pageSize,
@@ -21,9 +43,7 @@ func (handler *PropertyHandler) GetAllByCategory(context *gin.Context, category 
 		SortType:   sortType,
 	})
 	if err != nil {
-		context.AbortWithStatusJSON(
-			response2.TranslateErrorToStatusCode(err),
-			response2.GenerateResponseWithError(nil, false, err))
+		handler.respondWithBadStatus(context, err)
 		return
 	}
 
@@ -34,9 +54,7 @@ func (handler *PropertyHandler) CreateProperty(context *gin.Context) {
 	request := new(dto.PropertyCreationDto)
 	err := context.ShouldBindJSON(request)
 	if err != nil {
-		context.AbortWithStatusJSON(
-			http.StatusBadRequest,
-			response2.GenerateResponseWithValidationError(nil, false, err))
+		handler.respondWithBadStatus(context, err)
 		return
 	}
 

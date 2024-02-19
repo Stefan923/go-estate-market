@@ -10,6 +10,7 @@ import (
 )
 
 type UserAccountHandler struct {
+	BaseHandler
 	userAccountService *service.UserAccountService
 }
 
@@ -23,9 +24,7 @@ func (handler UserAccountHandler) Login(context *gin.Context) {
 	request := new(dto.LoginRequest)
 	err := context.ShouldBindJSON(&request)
 	if err != nil {
-		context.AbortWithStatusJSON(
-			http.StatusBadRequest,
-			response2.GenerateResponseWithValidationError(nil, false, err))
+		handler.respondWithBadStatus(context, err)
 		return
 	}
 
@@ -44,9 +43,7 @@ func (handler UserAccountHandler) Register(context *gin.Context) {
 	request := new(dto.RegisterRequest)
 	err := context.ShouldBindJSON(request)
 	if err != nil {
-		context.AbortWithStatusJSON(
-			http.StatusBadRequest,
-			response2.GenerateResponseWithValidationError(nil, false, err))
+		handler.respondWithBadStatus(context, err)
 		return
 	}
 

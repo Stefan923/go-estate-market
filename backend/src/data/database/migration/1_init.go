@@ -26,6 +26,8 @@ func Run() {
 	createAllTables(database)
 	createRolesAndAdminUser(database)
 	loadAndCreateCountries(database)
+	createPropertyCategories(database)
+	createCurrenciesIfNotExist(database)
 }
 
 func createAllTables(database *gorm.DB) {
@@ -40,6 +42,7 @@ func createAllTables(database *gorm.DB) {
 	addTable(database, &tables, model2.State{})
 	addTable(database, &tables, model2.City{})
 	addTable(database, &tables, model2.Address{})
+	addTable(database, &tables, model2.Currency{})
 
 	addTable(database, &tables, model2.PropertyCategory{})
 	addTable(database, &tables, model2.Property{})
@@ -207,11 +210,48 @@ func createCity(database *gorm.DB, city *model2.City) error {
 		Where("name = ?", city.Name).
 		First(&exists)
 
-	if exists != 0 {
+	if exists == 0 {
 		if err := database.Create(city).Error; err != nil {
 			log.Println("Error while creating city \"", city.Name, "\": ", err)
 			return err
 		}
 	}
 	return nil
+}
+
+func createPropertyCategories(database *gorm.DB) {
+	createPropertyCategoryIfNotExists(database, &model2.PropertyCategory{Name: "House", Icon: "category-house"})
+	createPropertyCategoryIfNotExists(database, &model2.PropertyCategory{Name: "Apartment", Icon: "category-apartment"})
+	createPropertyCategoryIfNotExists(database, &model2.PropertyCategory{Name: "Terrain", Icon: "category-terrain"})
+}
+
+func createPropertyCategoryIfNotExists(database *gorm.DB, propertyCategory *model2.PropertyCategory) {
+	exists := 0
+	database.
+		Model(&model2.PropertyCategory{}).
+		Select("1").
+		Where("name = ?", propertyCategory.Name).
+		First(&exists)
+	if exists == 0 {
+		database.Create(&propertyCategory)
+	}
+}
+
+func createCurrenciesIfNotExist(database *gorm.DB) {
+	createCurrencyIfNotExists(database, &model2.Currency{Code: "EUR"})
+	createCurrencyIfNotExists(database, &model2.Currency{Code: "USD"})
+	createCurrencyIfNotExists(database, &model2.Currency{Code: "GBP"})
+	createCurrencyIfNotExists(database, &model2.Currency{Code: "RON"})
+}
+
+func createCurrencyIfNotExists(database *gorm.DB, currency *model2.Currency) {
+	exists := 0
+	database.
+		Model(&model2.Currency{}).
+		Select("1").
+		Where("code = ?", currency.Code).
+		First(&exists)
+	if exists == 0 {
+		database.Create(&currency)
+	}
 }

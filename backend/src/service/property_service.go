@@ -32,7 +32,7 @@ func (service *PropertyService) Save(context context.Context, propertyDto *dto.P
 	property := model.Property{
 		OwnerId:            propertyDto.OwnerId,
 		CityId:             propertyDto.CityId,
-		CurrentCurrency:    propertyDto.CurrentCurrency,
+		CurrentCurrencyId:  propertyDto.CurrentCurrencyId,
 		CurrentPrice:       propertyDto.CurrentPrice,
 		PropertyCategoryId: propertyDto.CategoryId,
 	}
@@ -70,7 +70,7 @@ func (service *PropertyService) Save(context context.Context, propertyDto *dto.P
 			FirstName: createdProperty.Owner.FirstName,
 			LastName:  createdProperty.Owner.LastName,
 		},
-		CurrentCurrency: createdProperty.CurrentCurrency,
+		CurrentCurrency: createdProperty.CurrentCurrency.Code,
 		CurrentPrice:    createdProperty.CurrentPrice,
 		PropertyDetail: dto.PropertyDetailDto{
 			NumberOfRooms:         createdPropertyDetail.NumberOfRooms,
@@ -113,7 +113,7 @@ func (service *PropertyService) GetAllByCategory(category string, pageInfo *pagi
 				FirstName: property.Owner.FirstName,
 				LastName:  property.Owner.LastName,
 			},
-			CurrentCurrency: property.CurrentCurrency,
+			CurrentCurrency: property.CurrentCurrency.Code,
 			CurrentPrice:    property.CurrentPrice,
 			PropertyDetail: dto.PropertyDetailDto{
 				NumberOfRooms:         propertyDetail.NumberOfRooms,

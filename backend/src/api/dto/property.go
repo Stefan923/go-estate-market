@@ -11,13 +11,13 @@ type PropertyDto struct {
 }
 
 type PropertyCreationDto struct {
-	OwnerId         uint              `json:"ownerId"`
-	CurrentCurrency string            `json:"currentCurrency"`
-	CurrentPrice    float32           `json:"currentPrice"`
-	CityId          uint              `json:"cityId"`
-	CategoryId      uint              `json:"categoryId"`
-	PropertyDetail  PropertyDetailDto `json:"propertyDetail"`
-	Announcement    PostCreationDto   `json:"announcement"`
+	OwnerId           uint                      `json:"ownerId"`
+	CurrentCurrencyId uint                      `json:"currentCurrencyId"`
+	CurrentPrice      float32                   `json:"currentPrice"`
+	CityId            uint                      `json:"cityId"`
+	CategoryId        uint                      `json:"categoryId"`
+	PropertyDetail    PropertyDetailCreationDto `json:"propertyDetail"`
+	Announcement      PostCreationDto           `json:"announcement"`
 }
 
 type PropertyDetailDto struct {
@@ -26,4 +26,11 @@ type PropertyDetailDto struct {
 	NumberOfBathrooms     int  `json:"numberOfBathrooms"`
 	NumberOfKitchens      int  `json:"numberOfKitchens"`
 	NumberOfParkingSpaces int  `json:"numberOfParkingSpaces"`
+}
+
+type PropertyDetailCreationDto struct {
+	NumberOfRooms         int `json:"numberOfRooms"`
+	NumberOfBathrooms     int `json:"numberOfBathrooms"`
+	NumberOfKitchens      int `json:"numberOfKitchens"`
+	NumberOfParkingSpaces int `json:"numberOfParkingSpaces"`
 }

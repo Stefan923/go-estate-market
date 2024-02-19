@@ -14,8 +14,8 @@ func StartAuthRouter(router *gin.RouterGroup, config *config.Config) {
 }
 
 func StartPropertiesRouter(router *gin.RouterGroup, config *config.Config) {
-	userAccountHandler := handler.NewUserAccountHandler(config)
+	propertyHandler := handler.NewPropertyHandler()
 
-	router.GET("/", userAccountHandler.Login)
-	router.POST("/", userAccountHandler.Register)
+	router.GET("/:category/:pageNumber/:pageSize/:sortBy/:sortType", propertyHandler.GetAllByCategory)
+	router.POST("/", propertyHandler.CreateProperty)
 }
