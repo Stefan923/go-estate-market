@@ -15,7 +15,7 @@ type Property struct {
 	CurrentPrice       float32  `gorm:"type:decimal(10,2); not null;"`
 	Prices             *[]PropertyPrice
 	PropertyCategoryId uint
-	Category           PropertyCategory `gorm:"foreignKey:PropertyCategoryId; constraint:OnUpdate:NO ACTION; OnDelete:NO ACTION;"`
+	PropertyCategory   PropertyCategory `gorm:"foreignKey:PropertyCategoryId; constraint:OnUpdate:NO ACTION; OnDelete:NO ACTION;"`
 	Announcement       Post             `gorm:"foreignKey:PropertyId;"`
 }
 

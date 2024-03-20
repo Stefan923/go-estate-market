@@ -8,7 +8,7 @@ type PageInfo struct {
 }
 
 type Page[T any] struct {
-	Elements   *[]T `json:"elements"`
-	PageNumber int  `json:"pageNumber"`
-	PageSize   int  `json:"pageSize"`
+	Elements   []T `json:"elements"`
+	PageNumber int `json:"pageNumber"`
+	PageSize   int `json:"pageSize"`
 }

@@ -16,9 +16,12 @@ func NewPropertyRepository() *PropertyRepository {
 		BaseRepository: BaseRepository[model.Property]{
 			Database: database.GetDatabase(),
 			Preloads: []PreloadSetting{
-				{EntityName: "Category"},
+				{EntityName: "PropertyCategory"},
 				{EntityName: "Owner"},
+				{EntityName: "Owner.UserAccount"},
 				{EntityName: "City"},
+				{EntityName: "City.State"},
+				{EntityName: "City.State.Country"},
 				{EntityName: "Announcement"},
 				{EntityName: "CurrentCurrency"},
 			},
@@ -28,11 +31,12 @@ func NewPropertyRepository() *PropertyRepository {
 
 func (repository *PropertyRepository) FindAllByCategory(category string, pageInfo *pagination.PageInfo) (*pagination.Page[model.Property], error) {
 	var properties []model.Property
+	var preloadedDatabase = Preload(repository.Database, repository.Preloads)
 
 	offset := (pageInfo.PageNumber - 1) * pageInfo.PageSize
 	limit := pageInfo.PageSize
 
-	err := repository.Database.Where("category = ?", category).
+	err := preloadedDatabase.Where("property_category_id = ?", category).
 		Order(fmt.Sprintf("%s %s", pageInfo.SortBy, pageInfo.SortType)).
 		Offset(offset).
 		Limit(limit).
@@ -42,7 +46,7 @@ func (repository *PropertyRepository) FindAllByCategory(category string, pageInf
 	}
 
 	return &pagination.Page[model.Property]{
-		Elements:   &properties,
+		Elements:   properties,
 		PageNumber: pageInfo.PageNumber,
 		PageSize:   pageInfo.PageSize,
 	}, nil

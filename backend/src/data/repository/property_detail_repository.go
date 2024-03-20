@@ -21,7 +21,7 @@ func NewPropertyDetailRepository() *PropertyDetailRepository {
 }
 
 func (repository *PropertyDetailRepository) FindByPropertyId(propertyId uint) (*model.PropertyDetail, error) {
-	var propertyDetail *model.PropertyDetail
+	var propertyDetail = new(model.PropertyDetail)
 
 	err := repository.Database.
 		Where("property_id = ? and deleted_at is null", propertyId).

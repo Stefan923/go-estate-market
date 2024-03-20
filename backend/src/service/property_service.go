@@ -100,14 +100,15 @@ func (service *PropertyService) GetAllByCategory(category string, pageInfo *pagi
 		return nil, &error3.InternalError{EndUserMessage: error3.RecordNotFound}
 	}
 
-	var mappedProperties *pagination.Page[dto.PropertyDto]
-	for _, property := range *properties.Elements {
+	var mappedProperties = new(pagination.Page[dto.PropertyDto])
+	for _, property := range properties.Elements {
 		propertyDetail, err := service.propertyDetailRepository.FindByPropertyId(property.Id)
 		if err != nil {
 			return nil, &error3.InternalError{EndUserMessage: error3.RecordNotFound}
 		}
 
 		mappedProperty := dto.PropertyDto{
+			Id: property.Id,
 			Owner: dto.UserDetail{
 				Email:     property.Owner.UserAccount.Email,
 				FirstName: property.Owner.FirstName,
@@ -116,6 +117,7 @@ func (service *PropertyService) GetAllByCategory(category string, pageInfo *pagi
 			CurrentCurrency: property.CurrentCurrency.Code,
 			CurrentPrice:    property.CurrentPrice,
 			PropertyDetail: dto.PropertyDetailDto{
+				Id:                    propertyDetail.Id,
 				NumberOfRooms:         propertyDetail.NumberOfRooms,
 				NumberOfBathrooms:     propertyDetail.NumberOfBathrooms,
 				NumberOfKitchens:      propertyDetail.NumberOfKitchens,
@@ -127,16 +129,17 @@ func (service *PropertyService) GetAllByCategory(category string, pageInfo *pagi
 				City:    property.City.Name,
 			},
 			Announcement: dto.PostDto{
+				Id:          property.Announcement.Id,
 				Title:       property.Announcement.Title,
 				Description: property.Announcement.Description,
 				PropertyId:  property.Id,
 			},
 		}
-		*mappedProperties.Elements = append(*mappedProperties.Elements, mappedProperty)
+		mappedProperties.Elements = append(mappedProperties.Elements, mappedProperty)
 	}
 
-	mappedProperties.PageNumber = properties.PageNumber
-	mappedProperties.PageSize = properties.PageSize
+	mappedProperties.PageNumber = pageInfo.PageNumber
+	mappedProperties.PageSize = pageInfo.PageSize
 
 	return mappedProperties, nil
 }
